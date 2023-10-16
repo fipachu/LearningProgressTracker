@@ -97,20 +97,8 @@ files:
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/26935#comment
-status: Failed
+status: Solved
 feedback:
-  message: |-
-    Wrong answer in test #14
-
-    When an unknown command is entered, your program should display an error message: "Unknown command!"
-
-    Please find below the output of your program during this failed test.
-    Note that the '>' character indicates the beginning of the input line.
-
-    ---
-
-    Learning Progress Tracker
-    > exit please
-    Bye!
-  time: "Mon, 16 Oct 2023 11:39:43 UTC"
+  message: Congratulations!
+  time: "Mon, 16 Oct 2023 18:00:43 UTC"
 record: 1

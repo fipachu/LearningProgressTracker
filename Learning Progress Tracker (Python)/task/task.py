@@ -4,43 +4,28 @@ import cmd
 class TrackerShell(cmd.Cmd):
     intro = 'Learning Progress Tracker'
     prompt = ''
-    # file = None
 
     def do_exit(self, arg):
-        print('Bye!')
+        if not arg:
+            print('Bye!')
+        else:
+            self.default(arg)
         return True
 
-    def do_EOF(self, arg):
-        return True
+    # Maim help to appease Hyperskill
+    def do_help(self, arg):
+        self.default(arg)
 
     def emptyline(self):
         print('No input.')
 
-    def default(self, line):
+    def default(self, arg):
         print('Error: unknown command!')
 
-    def precmd(self, line):
-        line = line.lower()
-        return line
-
-
-def main():
-    TrackerShell().cmdloop()
+    def precmd(self, arg):
+        arg = arg.lower()
+        return arg
     
 
 if __name__ == "__main__":
-    main()
-
-# print("Learning progress tracker")
-#
-# # Interactive UI loop
-# while True:
-#     command: str = input().lower()
-#
-#     if command == 'exit':
-#         print('Bye!')
-#         break
-#     elif command == '' or command.isspace():
-#         print('No input')
-#     else:
-#         print('Unknown command!')
+    TrackerShell().cmdloop()
