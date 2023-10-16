@@ -926,6 +926,6 @@ files:
       
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
-feedback_link: https://hyperskill.org/projects/326/stages/1833/implement#comment
+feedback_link: https://hyperskill.org/learn/step/26939#comment
 status: Unchecked
 record: -1
