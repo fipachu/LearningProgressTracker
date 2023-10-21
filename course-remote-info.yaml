@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/27528/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Mon, 16 Oct 2023 16:40:10 UTC"
+update_date: "Sat, 21 Oct 2023 11:54:51 UTC"
 stages:
   - id: 1829
     step: 26935
@@ -116,14 +116,14 @@ topics:
       theory_id: 20084
     - title: Data structures
       theory_id: 16927
-    - title: Immutability
-      theory_id: 7929
     - title: Pseudocode
       theory_id: 15090
     - title: Pseudocode basics
       theory_id: 19510
     - title: Complex constructions in pseudocode
       theory_id: 20922
+    - title: Immutability
+      theory_id: 7929
     - title: "Hashing: overview"
       theory_id: 9831
     - title: Hash function

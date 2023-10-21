@@ -6,7 +6,7 @@ class TrackerShell(cmd.Cmd):
     prompt = ''
 
     def do_exit(self, arg):
-        if not arg:
+        if not arg:  # exit takes no arguments
             print('Bye!')
         else:
             self.default(arg)
@@ -25,7 +25,7 @@ class TrackerShell(cmd.Cmd):
     def precmd(self, arg):
         arg = arg.lower()
         return arg
-    
+
 
 if __name__ == "__main__":
     TrackerShell().cmdloop()
