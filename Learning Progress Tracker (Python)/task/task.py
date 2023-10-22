@@ -8,9 +8,6 @@ class Creds(NamedTuple):
     last_name: str | None
     email: str | None
 
-    def items(self):
-        return zip(self._fields, self)
-
 
 class TrackerShell(cmd.Cmd):
     intro = 'Learning Progress Tracker'
@@ -19,7 +16,7 @@ class TrackerShell(cmd.Cmd):
     def do_add(self, arg):
         # do_add requires subcommand students
         if arg and arg == 'students':
-            self.read_creds()
+            AddStudentsShell().cmdloop()
         else:
             self.default(arg)
 
@@ -39,7 +36,7 @@ class TrackerShell(cmd.Cmd):
 
     # Maim help to appease Hyperskill
     def do_help(self, arg):
-        self.default(arg)
+        self.default('help' + arg)
 
     def emptyline(self):
         print('No input.')
@@ -51,35 +48,54 @@ class TrackerShell(cmd.Cmd):
         arg = arg.lower()
         return arg
 
-    def read_creds(self):
-        print("Enter student credentials or 'back' to return:")
 
-        total_added = 0
-        while True:
-            line = input()
+class AddStudentsShell(cmd.Cmd):
+    intro = "Enter student credentials or 'back' to return:"
+    prompt = ''
+    number_added = 0
 
-            if line == 'back':
-                print(f'Total {total_added} students have been added.')
-                return
+    def do_back(self, arg):
+        if not arg:
+            print(f'Total {self.number_added} students have been added.')
+            return True
+        else:
+            self.default('back' + arg)
 
-            creds = parse_creds(line)
-            if creds:
-                for name, cred in creds.items():
-                    name = name.replace('_', ' ')
-                    if not cred:
-                        print(f'Incorrect {name}.')
-                        break
-                else:
-                    total_added += 1
-                    print('The student has been added.')
+    def do_help(self, arg):
+        self.default('help' + arg)
+
+    def emptyline(self):
+        self.default('')
+
+    def default(self, line):
+        creds = parse_creds(line)
+        if creds:
+            for key, cred in zip(creds._fields, creds):
+                key = key.replace('_', ' ')
+                if not cred:
+                    print(f'Incorrect {key}.')
+                    break
             else:
-                print('Incorrect credentials')
+                self.number_added += 1
+                print('The student has been added.')
+        else:
+            print('Incorrect credentials')
+
+    def precmd(self, line):
+        """Make line lowercase, but only if a corresponding command exists"""
+        lower = line.lower()
+        try:
+            getattr(self, 'do_' + lower)
+            line = lower
+        except AttributeError:
+            pass
+        return line
 
 
 def parse_creds(line: str) -> Creds | None:
     """Parse user-provided credentials
 
-    Return a Creds object with valid credentials as attributes,
+    Return a Creds object with credentials as attributes,
     replacing invalid credentials with None.
 
     Return None if any credentials are missing.
