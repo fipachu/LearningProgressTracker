@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/27528/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Sun, 22 Oct 2023 17:04:02 UTC"
+update_date: "Wed, 25 Oct 2023 15:17:24 UTC"
 stages:
   - id: 1829
     step: 26935
@@ -26,12 +26,10 @@ topics:
       theory_id: 5204
     - title: Overview of the basic program
       theory_id: 5208
-    - title: "PEP 8: Coding style conventions"
-      theory_id: 5879
-    - title: Comments
-      theory_id: 6081
     - title: Taking input
       theory_id: 5913
+    - title: "PEP 8: Coding style conventions"
+      theory_id: 5879
     - title: Installing packages with pip
       theory_id: 6230
     - title: Virtual Environment
@@ -44,31 +42,31 @@ topics:
       theory_id: 6193
     - title: Running Python applications in PyCharm
       theory_id: 19153
+    - title: Comments
+      theory_id: 6081
     - title: Basic data types
       theory_id: 5852
-    - title: Quotes and multi-line strings
-      theory_id: 5814
     - title: Variables
       theory_id: 5859
     - title: Boolean logic
       theory_id: 6025
     - title: Comparisons
       theory_id: 5920
+    - title: Quotes and multi-line strings
+      theory_id: 5814
     - title: String formatting
       theory_id: 6037
   1:
-    - title: Multi-line programs
-      theory_id: 5233
     - title: Load module
       theory_id: 6019
     - title: Introduction to OOP
       theory_id: 3614
-    - title: For loop
-      theory_id: 6065
     - title: Class
       theory_id: 6661
     - title: Class instances
       theory_id: 6669
+    - title: For loop
+      theory_id: 6065
     - title: Methods
       theory_id: 6931
     - title: What is a bug
@@ -77,6 +75,8 @@ topics:
       theory_id: 13438
     - title: Unit testing
       theory_id: 7545
+    - title: Multi-line programs
+      theory_id: 5233
     - title: Program execution
       theory_id: 6047
     - title: Errors
@@ -116,26 +116,26 @@ topics:
       theory_id: 20084
     - title: Data structures
       theory_id: 16927
+    - title: Immutability
+      theory_id: 7929
     - title: Pseudocode
       theory_id: 15090
     - title: Pseudocode basics
       theory_id: 19510
     - title: Complex constructions in pseudocode
       theory_id: 20922
-    - title: Immutability
-      theory_id: 7929
     - title: "Hashing: overview"
       theory_id: 9831
     - title: Hash function
       theory_id: 30143
     - title: Hash table
       theory_id: 13054
+    - title: Set
+      theory_id: 6643
     - title: Tuple
       theory_id: 7462
     - title: Dictionary
       theory_id: 6481
-    - title: Set
-      theory_id: 6643
     - title: Hashable
       theory_id: 7823
   3:

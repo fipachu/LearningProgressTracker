@@ -13,10 +13,20 @@ class TrackerShell(cmd.Cmd):
     intro = 'Learning Progress Tracker'
     prompt = ''
 
+    student_data = {}
+
     def do_add(self, arg):
         # do_add requires subcommand students
         if arg and arg == 'students':
-            AddStudentsShell().cmdloop()
+            AddStudentsShell(self.student_data).cmdloop()
+        elif arg and arg == 'points':
+            AddPointsShell(self.student_data).cmdloop()
+        else:
+            self.default(arg)
+
+    def do_list(self, arg):
+        if not arg:
+            print(*list(self.student_data), sep='\n')
         else:
             self.default(arg)
 
@@ -53,6 +63,11 @@ class AddStudentsShell(cmd.Cmd):
     intro = "Enter student credentials or 'back' to return:"
     prompt = ''
     number_added = 0
+    student_data: dict
+
+    def __init__(self, student_data):
+        self.student_data = student_data
+        super().__init__()
 
     def do_back(self, arg):
         if not arg:
@@ -68,16 +83,23 @@ class AddStudentsShell(cmd.Cmd):
         self.default('')
 
     def default(self, line):
+        """Attempt to add students to student_data"""
         creds = parse_creds(line)
         if creds:
-            for key, cred in zip(creds._fields, creds):
+            for key, cred in creds.items():
                 key = key.replace('_', ' ')
                 if not cred:
                     print(f'Incorrect {key}.')
                     break
             else:
-                self.number_added += 1
-                print('The student has been added.')
+                # creds are valid
+                student_id = hash(creds['email'])
+                if student_id not in self.student_data:
+                    self.student_data[student_id] = creds
+                    self.number_added += 1
+                    print('The student has been added.')
+                else:
+                    print('This email is already taken.')
         else:
             print('Incorrect credentials')
 
@@ -93,6 +115,7 @@ class AddStudentsShell(cmd.Cmd):
 
 
 def parse_creds(line: str) -> Creds | None:
+def parse_creds(line: str) -> dict | None:
     """Parse user-provided credentials
 
     Return a Creds object with credentials as attributes,
@@ -123,8 +146,7 @@ def parse_creds(line: str) -> Creds | None:
         email = re.fullmatch(r"[-.\w]+@[-.\w]+\.[-.\w]+", email)
         email = email and email.group()
 
-        return Creds(first_name, last_name, email)
-
+        return dict(first_name=first_name, last_name=last_name, email=email)
     else:
         return None
 
