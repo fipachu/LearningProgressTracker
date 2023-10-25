@@ -1,6 +1,9 @@
 import cmd
+import logging
 import re
 from typing import NamedTuple
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Creds(NamedTuple):
@@ -11,7 +14,7 @@ class Creds(NamedTuple):
 
 class TrackerShell(cmd.Cmd):
     intro = 'Learning Progress Tracker'
-    prompt = ''
+    prompt = 'tracker> '
 
     student_data = {}
 
@@ -26,7 +29,8 @@ class TrackerShell(cmd.Cmd):
 
     def do_list(self, arg):
         if not arg:
-            print(*list(self.student_data), sep='\n')
+            if self.student_data:
+                print(*self.student_data, sep='\n')
         else:
             self.default(arg)
 
@@ -61,7 +65,7 @@ class TrackerShell(cmd.Cmd):
 
 class AddStudentsShell(cmd.Cmd):
     intro = "Enter student credentials or 'back' to return:"
-    prompt = ''
+    prompt = 'add students> '
     number_added = 0
     student_data: dict
 
@@ -85,7 +89,7 @@ class AddStudentsShell(cmd.Cmd):
     def default(self, line):
         """Attempt to add students to student_data"""
         creds = parse_creds(line)
-        if creds:
+        if creds is not None:
             for key, cred in creds.items():
                 key = key.replace('_', ' ')
                 if not cred:
@@ -114,7 +118,61 @@ class AddStudentsShell(cmd.Cmd):
         return line
 
 
-def parse_creds(line: str) -> Creds | None:
+class AddPointsShell(AddStudentsShell):
+    intro = "Enter an id and points or 'back' to return:"
+    prompt = 'add points> '
+
+    def __init__(self, student_data):
+        self.student_data = student_data
+        super().__init__(student_data)
+
+    def default(self, line):
+        """Attempt to add points based on input lines"""
+        points = parse_points(line)
+
+        logging.debug(f'{line=}')
+        logging.debug(f'{points=}')
+        logging.debug(f'{self.student_data=}')
+
+        if points is not None:
+            student_id, *points = points
+
+            logging.debug(f'{student_id=}')
+
+            if student_id in self.student_data:
+                if 'points' not in self.student_data[student_id]:
+                    self.student_data[student_id] = [0] * 4
+
+                self.student_data[student_id] = \
+                    [old + p for old, p
+                     in zip(self.student_data[student_id], points)]
+
+                logging.debug('Points added!')
+            else:
+                print(f'No student is found for id={student_id}')
+        else:
+            print('Incorrect points format.')
+
+
+def parse_points(line: str) -> tuple[int, ...] | None:
+    line = line.split()
+    if len(line) == 5:
+        student_id, *points = line
+        try:
+            points = [int(p) for p in points]
+            student_id = int(student_id)
+        except ValueError:
+            return None
+
+        for p in points:
+            if p < 0:
+                return None
+
+        return student_id, *points
+    else:
+        return None
+
+
 def parse_creds(line: str) -> dict | None:
     """Parse user-provided credentials
 
