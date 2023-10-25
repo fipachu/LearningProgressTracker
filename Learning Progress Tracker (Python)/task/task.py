@@ -1,15 +1,8 @@
 import cmd
 import logging
 import re
-from typing import NamedTuple
 
 logging.basicConfig(level=logging.DEBUG)
-
-
-class Creds(NamedTuple):
-    first_name: str | None
-    last_name: str | None
-    email: str | None
 
 
 class TrackerShell(cmd.Cmd):

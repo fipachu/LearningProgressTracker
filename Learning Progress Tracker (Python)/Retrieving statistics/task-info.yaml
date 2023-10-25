@@ -840,5 +840,83 @@ files:
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/26938#comment
-status: Unchecked
-record: -1
+status: Failed
+feedback:
+  message: |-
+    Wrong answer in test #26
+
+    Expected output: PROMPT points: Python=10; DSA=10; Databases=10; Flask=10, but your output was: No student is found for id=PROMPT.
+    PROMPT
+
+    Please find below the output of your program during this failed test.
+    Note that the '>' character indicates the beginning of the input line.
+
+    ---
+
+    Learning Progress Tracker
+    PROMPT> add students
+    Enter student credentials or 'back' to return:
+    PROMPT> Shoshana Utica address0@mail.com
+    The student has been added.
+    PROMPT> Olga Rosanne address1@mail.com
+    The student has been added.
+    PROMPT> Hedwig Wally address2@mail.com
+    The student has been added.
+    PROMPT> Karee Antoinetta address3@mail.com
+    The student has been added.
+    PROMPT> Jermaine Naaman address4@mail.com
+    The student has been added.
+    PROMPT> back
+    Total 5 students have been added.
+    PROMPT> list
+    Students:
+    -5234796854698809272
+    -7339429823612649163
+    976009494388511885
+    7415415633287693942
+    -2735683627479285122
+    PROMPT> add points
+    Enter an id and points or 'back' to return:
+    PROMPT> -5234796854698809272 0 0 0 0
+    Points updated.
+    PROMPT> -5234796854698809272 0 0 0 0
+    Points updated.
+    PROMPT> -7339429823612649163 1 1 1 1
+    Points updated.
+    PROMPT> -7339429823612649163 1 1 1 1
+    Points updated.
+    PROMPT> 976009494388511885 2 2 2 2
+    Points updated.
+    PROMPT> 976009494388511885 2 2 2 2
+    Points updated.
+    PROMPT> 7415415633287693942 3 3 3 3
+    Points updated.
+    PROMPT> 7415415633287693942 3 3 3 3
+    Points updated.
+    PROMPT> -2735683627479285122 4 4 4 4
+    Points updated.
+    PROMPT> -2735683627479285122 4 4 4 4
+    Points updated.
+    PROMPT> PROMPT 5 5 5 5
+    No student is found for id=PROMPT
+    PROMPT> PROMPT 5 5 5 5
+    No student is found for id=PROMPT
+    PROMPT> back
+    Total 0 students have been added.
+    PROMPT> find
+    Enter an id or 'back' to return:
+    PROMPT> -5234796854698809272
+    -5234796854698809272 points: Python=0; DSA=0; Databases=0; Flask=0
+    PROMPT> -7339429823612649163
+    -7339429823612649163 points: Python=2; DSA=2; Databases=2; Flask=2
+    PROMPT> 976009494388511885
+    976009494388511885 points: Python=4; DSA=4; Databases=4; Flask=4
+    PROMPT> 7415415633287693942
+    7415415633287693942 points: Python=6; DSA=6; Databases=6; Flask=6
+    PROMPT> -2735683627479285122
+    -2735683627479285122 points: Python=8; DSA=8; Databases=8; Flask=8
+    PROMPT> PROMPT
+    No student is found for id=PROMPT.
+    PROMPT
+  time: "Wed, 25 Oct 2023 21:45:42 UTC"
+record: 4
