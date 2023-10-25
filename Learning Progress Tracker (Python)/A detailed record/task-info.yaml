@@ -492,5 +492,8 @@ files:
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/26937#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Wed, 25 Oct 2023 21:25:16 UTC"
 record: 3

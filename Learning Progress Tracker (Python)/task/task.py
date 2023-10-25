@@ -14,7 +14,7 @@ class Creds(NamedTuple):
 
 class TrackerShell(cmd.Cmd):
     intro = 'Learning Progress Tracker'
-    prompt = 'tracker> '
+    prompt = ''
 
     student_data = {}
 
@@ -27,10 +27,20 @@ class TrackerShell(cmd.Cmd):
         else:
             self.default(arg)
 
+    def do_find(self, arg):
+        if not arg:
+            FindShell(self.student_data).cmdloop()
+        else:
+            self.default(arg)
+
     def do_list(self, arg):
         if not arg:
             if self.student_data:
+                print('Students:')
                 print(*self.student_data, sep='\n')
+            else:
+                print('No students found.')
+
         else:
             self.default(arg)
 
@@ -65,7 +75,7 @@ class TrackerShell(cmd.Cmd):
 
 class AddStudentsShell(cmd.Cmd):
     intro = "Enter student credentials or 'back' to return:"
-    prompt = 'add students> '
+    prompt = ''
     number_added = 0
     student_data: dict
 
@@ -120,38 +130,53 @@ class AddStudentsShell(cmd.Cmd):
 
 class AddPointsShell(AddStudentsShell):
     intro = "Enter an id and points or 'back' to return:"
-    prompt = 'add points> '
-
-    def __init__(self, student_data):
-        self.student_data = student_data
-        super().__init__(student_data)
 
     def default(self, line):
         """Attempt to add points based on input lines"""
         points = parse_points(line)
 
-        logging.debug(f'{line=}')
-        logging.debug(f'{points=}')
-        logging.debug(f'{self.student_data=}')
+        # logging.debug(f'{line=}')
+        # logging.debug(f'{points=}')
+        # logging.debug(f'{self.student_data=}')
 
         if points is not None:
             student_id, *points = points
 
-            logging.debug(f'{student_id=}')
+            # logging.debug(f'{student_id=}')
 
             if student_id in self.student_data:
                 if 'points' not in self.student_data[student_id]:
-                    self.student_data[student_id] = [0] * 4
+                    self.student_data[student_id]['points'] = [0] * 4
 
-                self.student_data[student_id] = \
+                self.student_data[student_id]['points'] = \
                     [old + p for old, p
-                     in zip(self.student_data[student_id], points)]
+                     in zip(self.student_data[student_id]['points'], points)]
 
-                logging.debug('Points added!')
+                print('Points updated.')
+                # logging.debug('Points added!')
             else:
                 print(f'No student is found for id={student_id}')
         else:
             print('Incorrect points format.')
+
+
+class FindShell(AddStudentsShell):
+    intro = "Enter an id or 'back' to return:"
+
+    def default(self, line):
+        student_id = line
+        try:
+            student_id = int(student_id)
+        except ValueError:
+            valid = False
+        else:
+            valid = True
+
+        if valid and student_id in self.student_data:
+            print('{} points: Python={}; DSA={}; Databases={}; Flask={}'
+                  .format(student_id, *self.student_data[student_id]['points']))
+        else:
+            print(f'No student is found for id={line}.')
 
 
 def parse_points(line: str) -> tuple[int, ...] | None:
@@ -160,9 +185,13 @@ def parse_points(line: str) -> tuple[int, ...] | None:
         student_id, *points = line
         try:
             points = [int(p) for p in points]
-            student_id = int(student_id)
         except ValueError:
             return None
+
+        try:
+            student_id = int(student_id)
+        except ValueError:
+            pass
 
         for p in points:
             if p < 0:
