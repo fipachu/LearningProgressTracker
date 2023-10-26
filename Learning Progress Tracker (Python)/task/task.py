@@ -5,10 +5,17 @@ import re
 logging.basicConfig(level=logging.DEBUG)
 
 
-class TrackerShell(cmd.Cmd):
-    intro = 'Learning Progress Tracker'
+class Maim(cmd.Cmd):
+    """Base class mainly for maiming prompt and help"""
     prompt = ''
+    student_data: dict
 
+    def do_help(self, arg):
+        self.default('help ' + arg)
+
+
+class TrackerShell(Maim):
+    intro = 'Learning Progress Tracker'
     student_data = {}
 
     def do_add(self, arg):
@@ -41,19 +48,15 @@ class TrackerShell(cmd.Cmd):
         # exit takes no arguments
         if not arg:
             print('Bye!')
+            return True
         else:
             self.default(arg)
-        return True
 
     def do_back(self, arg):
         if not arg:
             print("Enter 'exit' to exit the program.")
         else:
             self.default(arg)
-
-    # Maim help to appease Hyperskill
-    def do_help(self, arg):
-        self.default('help' + arg)
 
     def emptyline(self):
         print('No input.')
@@ -66,28 +69,41 @@ class TrackerShell(cmd.Cmd):
         return arg
 
 
-class AddStudentsShell(cmd.Cmd):
-    intro = "Enter student credentials or 'back' to return:"
-    prompt = ''
-    number_added = 0
-    student_data: dict
+class Subshell(Maim):
+    """Base class for all subshells"""
 
     def __init__(self, student_data):
         self.student_data = student_data
         super().__init__()
 
+    def emptyline(self):
+        self.default('')
+
+    def do_back(self, arg):
+        if not arg:
+            return True
+        else:
+            self.default('back ' + arg)
+
+    def precmd(self, line):
+        """Make line lowercase, but only if a corresponding command exists"""
+        lower = line.lower()
+        try:
+            getattr(self, 'do_' + lower)
+            line = lower
+        except AttributeError:
+            pass
+        return line
+
+
+class AddStudentsShell(Subshell):
+    intro = "Enter student credentials or 'back' to return:"
+    number_added = 0
+
     def do_back(self, arg):
         if not arg:
             print(f'Total {self.number_added} students have been added.')
-            return True
-        else:
-            self.default('back' + arg)
-
-    def do_help(self, arg):
-        self.default('help' + arg)
-
-    def emptyline(self):
-        self.default('')
+        return super().do_back(arg)
 
     def default(self, line):
         """Attempt to add students to student_data"""
@@ -110,18 +126,8 @@ class AddStudentsShell(cmd.Cmd):
         else:
             print('Incorrect credentials')
 
-    def precmd(self, line):
-        """Make line lowercase, but only if a corresponding command exists"""
-        lower = line.lower()
-        try:
-            getattr(self, 'do_' + lower)
-            line = lower
-        except AttributeError:
-            pass
-        return line
 
-
-class AddPointsShell(AddStudentsShell):
+class AddPointsShell(Subshell):
     intro = "Enter an id and points or 'back' to return:"
 
     def default(self, line):
@@ -153,10 +159,11 @@ class AddPointsShell(AddStudentsShell):
             print('Incorrect points format.')
 
 
-class FindShell(AddStudentsShell):
+class FindShell(Subshell):
     intro = "Enter an id or 'back' to return:"
 
     def default(self, line):
+        """Attempt to find a student with ID line"""
         student_id = line
         try:
             student_id = int(student_id)
@@ -232,4 +239,4 @@ def parse_creds(line: str) -> dict | None:
 
 
 if __name__ == "__main__":
-    TrackerShell().cmdloop()
+    print(TrackerShell().cmdloop())

@@ -492,65 +492,8 @@ files:
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/26937#comment
-status: Failed
+status: Solved
 feedback:
-  message: |-
-    Wrong answer in test #26
-
-    Expected output: PROMPT points: Python=6; DSA=6; Databases=6; Flask=6, but your output was: No student is found for id=PROMPT.
-    PROMPT
-
-    Please find below the output of your program during this failed test.
-    Note that the '>' character indicates the beginning of the input line.
-
-    ---
-
-    Learning Progress Tracker
-    PROMPT> add students
-    Enter student credentials or 'back' to return:
-    PROMPT> Aurie Dorisa address2@mail.com
-    The student has been added.
-    PROMPT> Alexina Belcher address3@mail.com
-    The student has been added.
-    PROMPT> Tasha Chem address4@mail.com
-    The student has been added.
-    PROMPT> back
-    Total 3 students have been added.
-    PROMPT> list
-    Students:
-    -3827222783583082670
-    -1175898669656676019
-    7610334078862215417
-    PROMPT> add points
-    Enter an id and points or 'back' to return:
-    PROMPT> -3827222783583082670 0 0 0 0
-    Points updated.
-    PROMPT> -3827222783583082670 0 0 0 0
-    Points updated.
-    PROMPT> -1175898669656676019 1 1 1 1
-    Points updated.
-    PROMPT> -1175898669656676019 1 1 1 1
-    Points updated.
-    PROMPT> 7610334078862215417 2 2 2 2
-    Points updated.
-    PROMPT> 7610334078862215417 2 2 2 2
-    Points updated.
-    PROMPT> PROMPT 3 3 3 3
-    No student is found for id=PROMPT
-    PROMPT> PROMPT 3 3 3 3
-    No student is found for id=PROMPT
-    PROMPT> back
-    Total 0 students have been added.
-    PROMPT> find
-    Enter an id or 'back' to return:
-    PROMPT> -3827222783583082670
-    -3827222783583082670 points: Python=0; DSA=0; Databases=0; Flask=0
-    PROMPT> -1175898669656676019
-    -1175898669656676019 points: Python=2; DSA=2; Databases=2; Flask=2
-    PROMPT> 7610334078862215417
-    7610334078862215417 points: Python=4; DSA=4; Databases=4; Flask=4
-    PROMPT> PROMPT
-    No student is found for id=PROMPT.
-    PROMPT
-  time: "Wed, 25 Oct 2023 21:46:55 UTC"
+  message: Congratulations!
+  time: "Thu, 26 Oct 2023 15:52:50 UTC"
 record: 3
