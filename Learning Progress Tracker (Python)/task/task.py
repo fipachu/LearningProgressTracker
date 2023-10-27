@@ -239,4 +239,4 @@ def parse_creds(line: str) -> dict | None:
 
 
 if __name__ == "__main__":
-    print(TrackerShell().cmdloop())
+    TrackerShell().cmdloop()
