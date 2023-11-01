@@ -1,22 +1,5 @@
 type: edu
 files:
-  - name: task.py
-    visible: true
-    text: |
-      print("Learning progress tracker")
-      
-      # Interactive UI loop
-      while True:
-          command: str = input().lower()
-      
-          if command == 'exit':
-              print('Bye!')
-              break
-          elif command == '' or command.isspace():
-              print('No input')
-          else:
-              print('Unknown command!')
-    learner_created: false
   - name: test/__init__.py
     visible: false
     learner_created: false
@@ -838,6 +821,23 @@ files:
       from test.tests import LearningProgressTrackerTest
       
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
+    learner_created: false
+  - name: task.py
+    visible: true
+    text: |
+      print("Learning progress tracker")
+      
+      # Interactive UI loop
+      while True:
+          command: str = input().lower()
+      
+          if command == 'exit':
+              print('Bye!')
+              break
+          elif command == '' or command.isspace():
+              print('No input')
+          else:
+              print('Unknown command!')
     learner_created: false
 feedback_link: https://hyperskill.org/learn/step/26938#comment
 status: Failed

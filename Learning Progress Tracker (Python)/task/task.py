@@ -19,44 +19,45 @@ class TrackerShell(Maim):
     student_data = {}
 
     def do_add(self, arg):
-        # do_add requires subcommand students
-        if arg and arg == 'students':
-            AddStudentsShell(self.student_data).cmdloop()
-        elif arg and arg == 'points':
-            AddPointsShell(self.student_data).cmdloop()
-        else:
-            self.default(arg)
+        match arg:
+            case 'students':
+                AddStudentsShell(self.student_data).cmdloop()
+            case 'points':
+                AddPointsShell(self.student_data).cmdloop()
+            case _:
+                self.default(arg)
 
     def do_find(self, arg):
-        if not arg:
-            FindShell(self.student_data).cmdloop()
-        else:
-            self.default(arg)
+        match arg:
+            case '':
+                FindShell(self.student_data).cmdloop()
+            case _:
+                self.default(arg)
 
     def do_list(self, arg):
-        if not arg:
-            if self.student_data:
+        match arg, self.student_data:
+            case '', data if data:
                 print('Students:')
-                print(*self.student_data, sep='\n')
-            else:
+                print(*data, sep='\n')
+            case '', _:
                 print('No students found.')
-
-        else:
-            self.default(arg)
+            case _:
+                self.default(arg)
 
     def do_exit(self, arg):
-        # exit takes no arguments
-        if not arg:
-            print('Bye!')
-            return True
-        else:
-            self.default(arg)
+        match arg:
+            case '':
+                print('Bye!')
+                return True
+            case _:
+                self.default(arg)
 
     def do_back(self, arg):
-        if not arg:
-            print("Enter 'exit' to exit the program.")
-        else:
-            self.default(arg)
+        match arg:
+            case '':
+                print("Enter 'exit' to exit the program.")
+            case _:
+                self.default(arg)
 
     def emptyline(self):
         print('No input.')
@@ -80,10 +81,11 @@ class Subshell(Maim):
         self.default('')
 
     def do_back(self, arg):
-        if not arg:
-            return True
-        else:
-            self.default('back ' + arg)
+        match arg:
+            case '':
+                return True
+            case _:
+                self.default('back ' + arg)
 
     def precmd(self, line):
         """Make line lowercase, but only if a corresponding command exists"""
@@ -101,7 +103,7 @@ class AddStudentsShell(Subshell):
     number_added = 0
 
     def do_back(self, arg):
-        if not arg:
+        if arg == '':
             print(f'Total {self.number_added} students have been added.')
         return super().do_back(arg)
 
