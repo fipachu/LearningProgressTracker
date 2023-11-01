@@ -1,22 +1,5 @@
 type: edu
 files:
-  - name: task.py
-    visible: true
-    text: |
-      print("Learning progress tracker")
-      
-      # Interactive UI loop
-      while True:
-          command: str = input().lower()
-      
-          if command == 'exit':
-              print('Bye!')
-              break
-          elif command == '' or command.isspace():
-              print('No input')
-          else:
-              print('Unknown command!')
-    learner_created: false
   - name: test/__init__.py
     visible: false
     learner_created: false
@@ -494,9 +477,24 @@ files:
   - name: base.py
     visible: true
     learner_created: true
+  - name: __init__.py
+    visible: true
+    learner_created: true
+  - name: tracker.py
+    visible: true
+    learner_created: true
+  - name: main.py
+    visible: true
+    learner_created: true
+  - name: subshells.py
+    visible: true
+    learner_created: true
+  - name: parse.py
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/26937#comment
 status: Solved
 feedback:
   message: Congratulations!
-  time: "Wed, 01 Nov 2023 17:50:38 UTC"
+  time: "Wed, 01 Nov 2023 18:46:03 UTC"
 record: 3
