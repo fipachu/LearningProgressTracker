@@ -1082,9 +1082,6 @@ files:
               else:
                   print(f'No student is found for id={line}.')
     learner_created: true
-  - name: tutorial.db
-    visible: true
-    learner_created: true
   - name: main.py
     visible: true
     text: |
