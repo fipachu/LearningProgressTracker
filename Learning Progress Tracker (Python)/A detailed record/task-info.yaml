@@ -474,27 +474,30 @@ files:
       
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
-  - name: base.py
-    visible: true
-    learner_created: true
   - name: __init__.py
     visible: true
     learner_created: true
-  - name: tracker.py
-    visible: true
-    learner_created: true
-  - name: main.py
+  - name: parse.py
     visible: true
     learner_created: true
   - name: subshells.py
     visible: true
     learner_created: true
-  - name: parse.py
+  - name: tracker.py
+    visible: true
+    learner_created: true
+  - name: base.py
+    visible: true
+    learner_created: true
+  - name: main.py
+    visible: true
+    learner_created: true
+  - name: tutorial.db
     visible: true
     learner_created: true
 feedback_link: https://hyperskill.org/learn/step/26937#comment
 status: Solved
 feedback:
   message: Congratulations!
-  time: "Wed, 01 Nov 2023 18:46:03 UTC"
+  time: "Thu, 02 Nov 2023 17:22:39 UTC"
 record: 3

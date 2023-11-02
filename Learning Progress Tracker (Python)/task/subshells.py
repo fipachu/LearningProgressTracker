@@ -14,23 +14,22 @@ class AddStudentsShell(Subshell):
     def default(self, line):
         """Attempt to add students to student_data"""
         creds = parse_creds(line)
-        if creds is not None:
-            for key, cred in creds.items():
-                key = key.replace('_', ' ')
-                if not cred:
-                    print(f'Incorrect {key}.')
-                    break
-            else:
-                # creds are valid
-                student_id = hash(creds['email'])
-                if student_id not in self.student_data:
-                    self.student_data[student_id] = creds
-                    self.number_added += 1
-                    print('The student has been added.')
-                else:
-                    print('This email is already taken.')
-        else:
+        if creds is None:
             print('Incorrect credentials')
+            return
+        for key, cred in creds.items():
+            if cred is None:
+                print(f"Incorrect {key.replace('_', ' ')}.")
+                return
+
+        student_id = hash(creds['email'])
+        if student_id in self.student_data:
+            print('This email is already taken.')
+            return
+        else:
+            self.student_data[student_id] = creds
+            self.number_added += 1
+            print('The student has been added.')
 
 
 class AddPointsShell(Subshell):
