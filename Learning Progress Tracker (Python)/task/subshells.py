@@ -1,4 +1,5 @@
 from base import Subshell
+from constants import MAX_HASH
 from parse import parse_points, parse_creds
 
 
@@ -22,7 +23,7 @@ class AddStudentsShell(Subshell):
                 print(f"Incorrect {key}.")
                 return
 
-        student_id = hash(creds['email'])
+        student_id = hash(creds['email']) % MAX_HASH
         if student_id in self.student_data:
             print('This email is already taken.')
             return
