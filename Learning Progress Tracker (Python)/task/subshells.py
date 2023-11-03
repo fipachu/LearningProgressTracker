@@ -3,7 +3,7 @@ from constants import MAX_HASH
 from parse import parse_points, parse_creds
 
 
-class AddStudentsShell(Subshell):
+class AddStudents(Subshell):
     intro = "Enter student credentials or 'back' to return:"
     number_added = 0
 
@@ -33,7 +33,7 @@ class AddStudentsShell(Subshell):
             print('The student has been added.')
 
 
-class AddPointsShell(Subshell):
+class AddPoints(Subshell):
     intro = "Enter an id and points or 'back' to return:"
 
     def default(self, line):
@@ -56,7 +56,7 @@ class AddPointsShell(Subshell):
         print('Points updated.')
 
 
-class FindShell(Subshell):
+class Find(Subshell):
     intro = "Enter an id or 'back' to return:"
 
     def default(self, line):

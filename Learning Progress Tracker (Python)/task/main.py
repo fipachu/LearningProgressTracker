@@ -1,4 +1,4 @@
-from tracker import TrackerShell
+from tracker import Tracker
 
 if __name__ == "__main__":
-    TrackerShell().cmdloop()
+    Tracker().cmdloop()

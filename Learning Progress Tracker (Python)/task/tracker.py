@@ -1,24 +1,24 @@
 from base import Maim
-from subshells import AddStudentsShell, AddPointsShell, FindShell
+from subshells import AddStudents, AddPoints, Find
 
 
-class TrackerShell(Maim):
+class Tracker(Maim):
     intro = 'Learning Progress Tracker'
     student_data = {}
 
     def do_add(self, arg):
         match arg:
             case 'students':
-                AddStudentsShell(self.student_data).cmdloop()
+                AddStudents(self.student_data).cmdloop()
             case 'points':
-                AddPointsShell(self.student_data).cmdloop()
+                AddPoints(self.student_data).cmdloop()
             case _:
                 self.default(arg)
 
     def do_find(self, arg):
         match arg:
             case '':
-                FindShell(self.student_data).cmdloop()
+                Find(self.student_data).cmdloop()
             case _:
                 self.default(arg)
 
