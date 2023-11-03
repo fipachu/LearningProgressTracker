@@ -12,9 +12,9 @@ CheckResult.correct = lambda: CheckResult(True, '')
 CheckResult.wrong = lambda feedback: CheckResult(False, feedback)
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
-def any_missing_keywords(output: str, *keywords):
+def any_missing_keywords(output: str, *keywords: str):
     tokens = re.split("\\W+", output.lower())
-    return not all(el in tokens for el in keywords)
+    return not all(el.casefold() in tokens for el in keywords)
 
 
 def incorrect_string(output: str, model: str):
@@ -32,12 +32,12 @@ def generate_names(n: int):
              "Toby Bleier", "Dalia Gleeson", "Emelia Annnora", "Beatrisa Jegar", "Barbara-Anne Chicky",
              "Ann Agnella", "Lebbie Alabaster", "Leola Whelan", "Starlin Griz", "Anjanette Uis", "Tasha Chem"]
     random.shuffle(names)
-    return names[1:n]
+    return names[0:n]
 
 
 def generate_emails(n: int):
     emails = []
-    for i in range(1, n):
+    for i in range(0, n):
         emails.append("address" + str(i) + "@mail.com")
     return emails
 
@@ -46,7 +46,7 @@ def get_random_credentials(n: int):
     credentials = []
     names = generate_names(n)
     emails = generate_emails(n)
-    for i in range(1, n - 1):
+    for i in range(0, n):
         credentials.append(f"{names[i]} {emails[i]}")
     return credentials
 
@@ -70,6 +70,102 @@ def parse_ids(output: str):
     if len(lines) < 2:
         raise WrongAnswer("Make sure, that output from 'list' command is correct")
     return lines[1:]
+
+
+def check_lines_1(current_lines, ids):
+    return (not ((re.match(".+\\s+10\\s+1\\.7\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.8\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.6\\s?%.*", current_lines[2]))) or
+
+            not ((re.match(".+\\s+5\\s+0\\.8\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+0\\.9\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+0\\.7\\s?%.*", current_lines[3]))) or
+
+            not ((re.match(".+\\s+5\\s+0\\.8\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+0\\.9\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+0\\.7\\s?%.*", current_lines[4]))) or
+
+            not ((re.match(".+\s+2\s+0\.3\s?%.*", current_lines[5])) or
+                 (re.match(".+\s+2\s+0\.2\s?%.*", current_lines[5])) or
+                 (re.match(".+\s+2\s+0\.4\s?%.*", current_lines[5]))) or
+
+            not current_lines[2].startswith(ids[0]) or
+            (not current_lines[3].startswith(ids[1]) and not current_lines[3].startswith(ids[2])) or
+            (not current_lines[4].startswith(ids[1]) and not current_lines[4].startswith(ids[2])) or
+            not current_lines[5].startswith(ids[3]) or
+            (current_lines[3].startswith(ids[1]) and ids[1] >= ids[2]) or
+            (current_lines[3].startswith(ids[2]) and ids[2] >= ids[1]))
+
+
+def check_lines_2(current_lines, ids):
+    return (not ((re.match(".+\\s+10\\s+2\\.5\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.6\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.4\\s?%.*", current_lines[2]))) or
+
+            not ((re.match(".+\\s+5\\s+1\\.3\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+1\\.4\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+1\\.2\\s?%.*", current_lines[3]))) or
+
+            not ((re.match(".+\\s+5\\s+1\\.3\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+1\\.2\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+1\\.4\\s?%.*", current_lines[4]))) or
+
+            not ((re.match(".+\\s+2\\s+0\\.5\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.4\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.3\\s?%.*", current_lines[5]))) or
+
+            not current_lines[2].startswith(ids[0]) or
+            (not current_lines[3].startswith(ids[1]) and not current_lines[3].startswith(ids[2])) or
+            (not current_lines[4].startswith(ids[1]) and not current_lines[4].startswith(ids[2])) or
+            not current_lines[5].startswith(ids[3]) or
+            (current_lines[3].startswith(ids[1]) and ids[1] >= ids[2]) or
+            (current_lines[3].startswith(ids[2]) and ids[2] >= ids[1]))
+
+
+def check_lines_3(current_lines, ids):
+    return (not ((re.match(".+\\s+10\\s+2\\.1\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+2\\.2\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+2\\.0\\s?%.*", current_lines[2]))) or
+
+            not ((re.match(".+\\s+5\\s+1\\.0\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+1\\.1\\s?%.*", current_lines[3]))) or
+
+            not ((re.match(".+\\s+5\\s+1\\.0\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+1\\.1\\s?%.*", current_lines[4]))) or
+
+            not ((re.match(".+\\s+2\\s+0\\.4\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.3\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.5\\s?%.*", current_lines[5]))) or
+
+            not current_lines[2].startswith(ids[0]) or
+            (not current_lines[3].startswith(ids[1]) and not current_lines[3].startswith(ids[2])) or
+            (not current_lines[4].startswith(ids[1]) and not current_lines[4].startswith(ids[2])) or
+            not current_lines[5].startswith(ids[3]) or
+            (current_lines[3].startswith(ids[1]) and ids[1] >= ids[2]) or
+            (current_lines[3].startswith(ids[2]) and ids[2] >= ids[1]))
+
+
+def check_lines_4(current_lines, ids):
+    return (not ((re.match(".+\\s+10\\s+1\\.8\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.9\\s?%.*", current_lines[2])) or
+                 (re.match(".+\\s+10\\s+1\\.7\\s?%.*", current_lines[2]))) or
+
+            not ((re.match(".+\\s+5\\s+0\\.9\\s?%.*", current_lines[3])) or
+                 (re.match(".+\\s+5\\s+0\\.8\\s?%.*", current_lines[3]))) or
+
+            not ((re.match(".+\\s+5\\s+0\\.9\\s?%.*", current_lines[4])) or
+                 (re.match(".+\\s+5\\s+0\\.8\\s?%.*", current_lines[4]))) or
+
+            not ((re.match(".+\\s+2\\s+0\\.4\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.3\\s?%.*", current_lines[5])) or
+                 (re.match(".+\\s+2\\s+0\\.5\\s?%.*", current_lines[5]))) or
+
+            not current_lines[2].startswith(ids[0]) or
+            (not current_lines[3].startswith(ids[1]) and not current_lines[3].startswith(ids[2])) or
+            (not current_lines[4].startswith(ids[1]) and not current_lines[4].startswith(ids[2])) or
+            not current_lines[5].startswith(ids[3]) or
+            (current_lines[3].startswith(ids[1]) and ids[1] >= ids[2]) or
+            (current_lines[3].startswith(ids[2]) and ids[2] >= ids[1]))
 
 
 class LearningProgressTrackerTest(StageTest):
@@ -444,6 +540,7 @@ class LearningProgressTrackerTest(StageTest):
             if incorrect_string(output, expected):
                 return CheckResult.wrong("Expected output: " + expected +
                                          ", but your output was: " + output)
+
         # negative test case:
         negative_ids = ['10001', 'llen', '00000', '']
         for i in negative_ids:
@@ -452,6 +549,257 @@ class LearningProgressTrackerTest(StageTest):
             if incorrect_string(output, expected):
                 return CheckResult.wrong("Expected output: " + expected +
                                          ", but your output was: " + output)
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=15)
+    def test_back_from_statistics(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        output = main.execute("statistics")
+        main.execute("back")
+        output = main.execute("back")
+        if any_missing_keywords(output, "enter", "exit", "program"):
+            return CheckResult.wrong("When 'back' command is entered your program " +
+                                     "should stop waiting for student id")
+        output = main.execute("exit")
+        if any_missing_keywords(output, "bye"):
+            return CheckResult.wrong("When the 'exit' command is entered, " +
+                                     "your program should say bye to the user")
+
+        if not main.is_finished():
+            return CheckResult.wrong("After the 'exit' command has been entered, " +
+                                     "your program should stop working")
+        return CheckResult.correct()
+
+    @dynamic_test(order=16)
+    def test_statistics_1(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+
+        output = main.execute("statistics")
+        lines = output.split("\n")
+        lines = [i for i in lines if i]
+        feedback = "When the \"statistics\" command is entered, your " \
+                   "program must print: \"Type the name of a course to see details or 'back' " \
+                   "to quit:\", but your output was: "
+        if len(lines) == 0:
+            return CheckResult.wrong(feedback)
+
+        if any_missing_keywords(lines[0], "course", "details", "back", "quit"):
+            return CheckResult.wrong(feedback + lines[0])
+
+        if len(lines) < 7:
+            return CheckResult.wrong("Your program should print a header and 6 " +
+                                     "categories, but you printed only " + str(len(lines)) + " lines")
+
+        categories = ["Most popular: n/a", "Least popular: n/a",
+                      "Highest activity: n/a", "Lowest activity: n/a", "Easiest course: n/a",
+                      "Hardest course: n/a"]
+
+        for i in range(len(categories)):
+            if incorrect_string(lines[i + 1], categories[i]):
+                return CheckResult.wrong("Expected: " + categories[i] +
+                                         ", but your output was " + lines[i + 1])
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=17)
+    def test_statistics_2(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        main.execute("statistics")
+
+        courses = ["Python", "DSA", "Databases", "Flask", "python", "dsa", "databases", "flask"]
+        for course in courses:
+            output = main.execute(course)
+            lines = output.split("\n")
+            if len(lines) < 2:
+                return CheckResult.wrong("Expected 2 lines, but your output was only " + str(len(lines)) + " lines.")
+            if incorrect_string(lines[0], course.lower()):
+                return CheckResult.wrong("Your first line should be " + course + ", but your output was " + lines[0])
+            if any_missing_keywords(lines[1], "id", "points", "completed"):
+                return CheckResult.wrong("Your second line should be \"id\tpoints\tcompleted\", " +
+                                         "but your output was " + lines[1])
+        unknown = [c for c in self.unknown_commands if c.casefold() not in courses]
+        for course in unknown:
+            output = main.execute(course)
+            if incorrect_string(output, "unknown course"):
+                return CheckResult.wrong("Expected output: \"Unknown course.\", but your output was: " + output)
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=18)
+    def test_statistics_3(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        main.execute("statistics")
+
+        main.execute("back")
+        if main.is_waiting_input() is False:
+            return CheckResult.wrong("Your program should keep running after the 'back' "
+                                     "command is entered")
+
+        output = main.execute("back")
+        if any_missing_keywords(output, "enter", "exit", "program"):
+            return CheckResult.wrong("When 'back' command is entered your program "
+                                     "should print the hint \"Enter 'exit' to exit the program.\"")
+
+        output = main.execute("exit")
+        if any_missing_keywords(output, "bye"):
+            return CheckResult.wrong("When the 'exit' command is entered, "
+                                     "your program should say bye to the user")
+
+        if not main.is_finished():
+            return CheckResult.wrong("After the 'exit' command has been entered, "
+                                     "your program should stop working")
+        return CheckResult.correct()
+
+    @dynamic_test(order=19)
+    def test_categories_1(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        main.execute("add students")
+
+        credentials = get_random_credentials(4)
+        for c in credentials:
+            main.execute(c)
+
+        main.execute("back")
+        output = main.execute("list")
+        ids = parse_ids(output)
+
+        main.execute("add points")
+        for id in ids:
+            main.execute("{} 5 4 3 1".format(id))
+
+        main.execute("back")
+        output = main.execute("statistics")
+        lines = output.splitlines()
+        output_string = ""
+        if len(lines) != 7:
+            output_string = ''.join([line + "\n" for line in lines])
+            return CheckResult.wrong("Expected header: "
+                                     "Type the name of a course to see details or 'back' to quit "
+                                     "and six lines with the following information: "
+                                     "Most popular, Least popular, Highest activity, Lowest activity, Easiest course, "
+                                     "Hardest course, but your output was: " + output_string)
+        if any_missing_keywords(lines[1], "python", "dsa", "databases", "flask"):
+            return CheckResult.wrong("Expected most popular: Python, DSA, Databases, Flask, "
+                                     "but your output was: " + lines[1])
+        if "n/a" not in lines[2].lower():
+            return CheckResult.wrong("Expected least popular: n/a, "
+                                     "but your output was: " + lines[2])
+
+        if any_missing_keywords(lines[3], "python", "dsa", "databases", "flask"):
+            return CheckResult.wrong("Expected highest activity: Python, DSA, Databases, Flask, " +
+                                     "but your output was: " + lines[3])
+
+        if "n/a" not in lines[4].lower():
+            return CheckResult.wrong("Expected lowest activity: n/a, "
+                                     "but your output was: " + lines[4])
+
+        if any_missing_keywords(lines[5], "python"):
+            return CheckResult.wrong("Expected easiest course: Python, " +
+                                     "but your output was: " + lines[5])
+
+        if any_missing_keywords(lines[6], "flask"):
+            return CheckResult.wrong("Expected hardest course: Flask, "
+                                     "but your output was: " + lines[6])
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=20)
+    def test_categories_2(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        main.execute("add students")
+
+        credentials = get_random_credentials(4)
+        for c in credentials:
+            main.execute(c)
+
+        main.execute("back")
+        output = main.execute("list")
+        ids = parse_ids(output)
+
+        main.execute("add points")
+        main.execute("{} 10 10 10 10".format(ids[0]))
+        main.execute("{} 5 5 5 5".format(ids[1]))
+        main.execute("{} 5 5 5 5".format(ids[2]))
+        main.execute("{} 2 2 2 2".format(ids[3]))
+
+        main.execute("back")
+        main.execute("statistics")
+
+        lines_python = main.execute("Python").splitlines()
+        lines_dsa = main.execute("DSA").splitlines()
+        lines_db = main.execute("Databases").splitlines()
+        lines_flask = main.execute("Flask").splitlines()
+
+        if len(lines_python) < 6 or check_lines_1(lines_python, ids):
+            return CheckResult.wrong("Your Python student list either contains incorrect data or is incorrectly sorted")
+        if len(lines_dsa) < 6 or check_lines_2(lines_dsa, ids):
+            return CheckResult.wrong("Your DSA student list either contains incorrect data or is incorrectly sorted")
+        if len(lines_db) < 6 or check_lines_3(lines_db, ids):
+            return CheckResult.wrong("Your Databases student list either contains incorrect data "
+                                     "or is incorrectly sorted")
+        if len(lines_flask) < 6 or check_lines_4(lines_flask, ids):
+            return CheckResult.wrong("Your Flask student list either contains incorrect data "
+                                     "or is incorrectly sorted")
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=21)
+    def test_categories_3(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+        main.execute("add students")
+
+        main.execute("John Doe johnd@email.net")
+        main.execute("Jane Spark jspark@yahoo.com")
+        main.execute("back")
+
+        output = main.execute("list")
+        ids = parse_ids(output)
+        lines = output.splitlines()
+
+        main.execute("add points")
+        main.execute("{} 8 7 7 5".format(ids[0]))
+        main.execute("{} 7 6 9 7".format(ids[0]))
+        main.execute("{} 6 5 5 0".format(ids[0]))
+        main.execute("{} 8 0 8 6".format(ids[1]))
+        main.execute("{} 7 0 0 0".format(ids[1]))
+        main.execute("{} 9 0 0 5".format(ids[1]))
+
+        main.execute("back")
+        main.execute("statistics")
+
+        lines_python = main.execute("Python").splitlines()
+        lines_dsa = main.execute("DSA").splitlines()
+        lines_db = main.execute("Databases").splitlines()
+        lines_flask = main.execute("Flask").splitlines()
+
+        if len(lines_python) < 4 or (not re.match(".+\\s+24\\s+4\\.0\\s?%.*", lines_python[2]) or
+                                     not re.match(".+\\s+21\\s+3\\.5\\s?%.*", lines_python[3]) or
+                                     not lines_python[2].startswith(ids[1]) or not lines_python[3].startswith(ids[0])):
+            return CheckResult.wrong("Your Python student list either contains incorrect data or is incorrectly sorted")
+
+        if len(lines_dsa) < 3 or not re.match(".+\\s+18\\s+4\\.5\\s?%.*", lines_dsa[2]) or not lines_dsa[2].startswith(
+                ids[0]):
+            return CheckResult.wrong("Your DSA student list either contains incorrect data or is incorrectly sorted")
+
+        if len(lines_db) < 4 or (not re.match(".+\\s+21\\s+4\\.4\\s?%.*", lines_db[2]) or
+                                 not re.match(".+\\s+8\\s+1\\.7\\s?%.*", lines_db[3]) or
+                                 not lines_db[2].startswith(ids[0]) or not lines_db[3].startswith(ids[1])):
+            return CheckResult.wrong("Your Databases student list either contains incorrect data "
+                                     "or is incorrectly sorted")
+
+        if len(lines_flask) < 4 or (not re.match(".+\\s+12\\s+2\\.2\\s?%.*", lines_flask[2]) or
+                                 not re.match(".+\\s+11\\s+2\\.0\\s?%.*", lines_flask[3]) or
+                                 not lines_flask[2].startswith(ids[0]) or not lines_flask[3].startswith(ids[1])):
+            return CheckResult.wrong("Your Flask student list either contains incorrect data "
+                                     "or is incorrectly sorted")
 
         return CheckResult.correct()
 

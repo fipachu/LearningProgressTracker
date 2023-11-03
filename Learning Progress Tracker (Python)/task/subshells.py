@@ -37,7 +37,7 @@ class AddPoints(Subshell):
     intro = "Enter an id and points or 'back' to return:"
 
     def default(self, line):
-        """Attempt to add points based on input lines"""
+        """Attempt to add points and submission counts based on input lines"""
         points = parse_points(line)
         if points is None:
             print('Incorrect points format.')
@@ -47,13 +47,18 @@ class AddPoints(Subshell):
             print(f'No student is found for id={student_id}')
             return
 
-        if 'points' not in self.student_data[student_id]:
-            self.student_data[student_id]['points'] = list(points)
-        else:
-            self.student_data[student_id]['points'] = \
-                [old + p for old, p
-                 in zip(self.student_data[student_id]['points'], points)]
+        submissions = (int(bool(x)) for x in points)
+        self.update_list('points', points, student_id)
+        self.update_list('submissions', submissions, student_id)
         print('Points updated.')
+
+    def update_list(self, name, incoming, student_id):
+        if name not in self.student_data[student_id]:
+            self.student_data[student_id][name] = list(incoming)
+        else:
+            self.student_data[student_id][name] = \
+                [old + i for old, i
+                 in zip(self.student_data[student_id][name], incoming)]
 
 
 class Find(Subshell):

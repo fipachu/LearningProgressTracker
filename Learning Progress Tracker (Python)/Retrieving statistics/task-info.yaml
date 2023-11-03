@@ -1093,13 +1093,21 @@ files:
   - name: tutorial.db-journal
     visible: true
     learner_created: true
+  - name: constants.py
+    visible: true
+    text: |
+      MAX_HASH = 10 ** 6
+    learner_created: true
+  - name: tutorial.db
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/26938#comment
 status: Failed
 feedback:
   message: |-
     Wrong answer in test #28
 
-    When the "statistics" command is entered, your program must print: "Type the name of a course to see details or 'back' to quit:", but your output was: Error: unknown command!
+    When the "statistics" command is entered, your program must print: "Type the name of a course to see details or 'back' to quit:", but your output was: Most popular: n/a
 
     Please find below the output of your program during this failed test.
     Note that the '>' character indicates the beginning of the input line.
@@ -1108,6 +1116,11 @@ feedback:
 
     Learning Progress Tracker
     > statistics
-    Error: unknown command!
-  time: "Thu, 02 Nov 2023 16:23:13 UTC"
+    Most popular: n/a
+    Least popular: n/a
+    Highest activity: n/a
+    Lowest activity: n/a
+    Easiest course: n/a
+    Hardest course: n/a
+  time: "Fri, 03 Nov 2023 15:57:07 UTC"
 record: 4
