@@ -1,7 +1,7 @@
 # TODO: clean up all the logging statements
 import logging
 
-from base import Subshell, add_values
+from base import Subshell
 from constants import MAX_HASH, COURSE_NAMES
 from parse import parse_points, parse_creds
 
@@ -33,7 +33,7 @@ class AddStudents(Subshell):
             print('This email is already taken.')
             return
         else:
-            # TODO: initialize student_data with points and submissions
+            # FIXME?: initialize student_data with points and submissions
             #   with values [0]*4 to prevent KeyError in code assuming
             #   these keys exist
             self.student_data[student_id] = creds
@@ -89,6 +89,10 @@ class Find(Subshell):
 
 
 class Stats(Subshell):
+    # TODO:
+    #   Figure out a way to "establish top learners for each course",
+    #   ergo: list student ID's by decreasing points for every course,
+    #   and by ID on conflicts.
     intro = "Type the name of a course to see details or 'back' to quit:\n"
     INFO = ('Most popular: {}\n'
             'Least popular: {}\n'
@@ -98,40 +102,25 @@ class Stats(Subshell):
             'Hardest course: {}')
 
     def preloop(self):
-        stats = self.get_stats()
+        stats = self.get_intro_stats()
         stats = [s if s is not None else 'n/a'
                  for s in stats]
         self.intro += self.INFO.format(*stats)
-        logging.debug(f'intro:\n{self.intro}')
+        # logging.debug(f'intro:\n{self.intro}')
 
-    def get_stats(self) -> (str | None,) * 6:
-        # TODO: refactor this method, cuz it UGLY
-        # return (None,) * 6
+    def get_intro_stats(self) -> (str | None,) * 6:
+        # FIXME?: a course with no submissions can be considered hardest
+        #         this behaviour is probably bad.
 
-        # Count enrolled students by course:
-        enrolled_counts = [0] * 4
-        for student in self.student_data.values():
-            # If a student has any submissions in a course, they are enrolled
-            students_courses = [int(bool(i)) for i in student['submissions']]
-            enrolled_counts = add_values(enrolled_counts, students_courses)
+        # Maybe this can be done elegantly in a loop. Maybe.
+        enrolled_counts = self.magic_sum('submissions', counting_mode=True)
         # DEBUG('popularity', enrolled_counts)
-
-        # Count submissions by course
-        submission_counts = [0] * 4
-        for student in self.student_data.values():
-            submission_counts = add_values(submission_counts, student['submissions'])
+        submission_counts = self.magic_sum('submissions')
         # DEBUG('activity', submission_counts)
-
-        # Calculate average grade per submission per course
-        total_grades = [0] * 4
-        for student in self.student_data.values():
-            total_grades = add_values(total_grades, student['points'])
+        total_grades = self.magic_sum('points')
         # DEBUG('total_grades', total_grades)
-        # TODO?: something to stop a course with no submissions from
-        #   being considered hardest?
-        average_grades = \
-            [t / s if s != 0 else 0
-             for t, s in zip(total_grades, submission_counts)]
+        average_grades = [(t / s) if s != 0 else 0
+                          for t, s in zip(total_grades, submission_counts)]
         # DEBUG('difficulty', average_grades)
 
         output = []
@@ -139,10 +128,18 @@ class Stats(Subshell):
             output.extend(self.get_most_and_least(metric))
         return output
 
-        # TODO:
-        #   Figure out a way to "establish top learners for each course",
-        #   ergo: list student ID's by decreasing points for every course,
-        #   and by ID on conflicts.
+    def magic_sum(self, column: str, counting_mode=False):
+        out = [0] * 4
+        for student in self.student_data.values():
+            field = student[column]
+            if counting_mode:
+                field = [int(bool(n)) for n in field]
+            out = (self.add_values(out, field))
+        return out
+
+    @staticmethod
+    def add_values(sequence_1, sequence_2):
+        return [x + y for x, y in zip(sequence_1, sequence_2)]
 
     @staticmethod
     def get_most_and_least(metric) -> (str | None,) * 2:
@@ -181,7 +178,7 @@ if __name__ == '__main__':
         {
             752001:
                 {
-                    'points': [6.9, 20, 6, 0],
+                    'points': [69, 20, 6, 0],
                     'submissions': [10, 5, 2, 0]
                 },
             # 752002:

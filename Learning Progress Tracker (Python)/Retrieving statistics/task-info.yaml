@@ -1104,15 +1104,9 @@ feedback:
   message: "Wrong answer in test #29\n\nYour second line should be \"id\tpoints\t\
     completed\", but your output was\n\nPlease find below the output of your program\
     \ during this failed test.\nNote that the '>' character indicates the beginning\
-    \ of the input line.\n\n---\n\nstdout:\nLearning Progress Tracker\n> statistics\n\
-    Type the name of a course to see details or 'back' to quit:\nMost popular: n/a\n\
-    Least popular: n/a\nHighest activity: n/a\nLowest activity: n/a\nEasiest course:\
-    \ n/a\nHardest course: n/a\n> Python\n*** Unknown syntax: Python\n\nstderr:\n\
-    DEBUG:root:popularity:[0, 0, 0, 0]\nDEBUG:root:activity:[0, 0, 0, 0]\nDEBUG:root:total_grades:[0,\
-    \ 0, 0, 0]\nDEBUG:root:difficulty:[0, 0, 0, 0]\nDEBUG:root:most_popular=None,\
-    \ least_popular=None\nDEBUG:root:most_activity=None, least_activity=None\nDEBUG:root:easiest=None,\
-    \ hardest=None\nDEBUG:root:Type the name of a course to see details or 'back'\
-    \ to quit:\nMost popular: n/a\nLeast popular: n/a\nHighest activity: n/a\nLowest\
-    \ activity: n/a\nEasiest course: n/a\nHardest course: n/a"
-  time: "Sat, 04 Nov 2023 16:13:42 UTC"
+    \ of the input line.\n\n---\n\nLearning Progress Tracker\n> statistics\nType the\
+    \ name of a course to see details or 'back' to quit:\nMost popular: n/a\nLeast\
+    \ popular: n/a\nHighest activity: n/a\nLowest activity: n/a\nEasiest course: n/a\n\
+    Hardest course: n/a\n> Python\n*** Unknown syntax: Python"
+  time: "Sat, 04 Nov 2023 20:26:53 UTC"
 record: 4
