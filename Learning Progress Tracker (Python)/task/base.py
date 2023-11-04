@@ -1,6 +1,10 @@
 import cmd
 
 
+def add_values(sequence_1, sequence_2):
+    return [x + y for x, y in zip(sequence_1, sequence_2)]
+
+
 class Maim(cmd.Cmd):
     """Base class mainly for maiming prompt and help"""
     prompt = ''

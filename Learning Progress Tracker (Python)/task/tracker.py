@@ -1,5 +1,5 @@
 from base import Maim
-from subshells import AddStudents, AddPoints, Find
+from subshells import AddStudents, AddPoints, Find, Stats
 
 
 class Tracker(Maim):
@@ -19,6 +19,13 @@ class Tracker(Maim):
         match arg:
             case '':
                 Find(self.student_data).cmdloop()
+            case _:
+                self.default(arg)
+
+    def do_statistics(self, arg):
+        match arg:
+            case '':
+                Stats(self.student_data).cmdloop()
             case _:
                 self.default(arg)
 

@@ -822,6 +822,17 @@ files:
       
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
+  - name: tutorial.db
+    visible: true
+    learner_created: true
+  - name: main.py
+    visible: true
+    text: |
+      from tracker import TrackerShell
+      
+      if __name__ == "__main__":
+          TrackerShell().cmdloop()
+    learner_created: true
   - name: tracker.py
     visible: true
     text: |
@@ -1082,45 +1093,26 @@ files:
               else:
                   print(f'No student is found for id={line}.')
     learner_created: true
-  - name: main.py
-    visible: true
-    text: |
-      from tracker import TrackerShell
-      
-      if __name__ == "__main__":
-          TrackerShell().cmdloop()
-    learner_created: true
-  - name: tutorial.db-journal
-    visible: true
-    learner_created: true
   - name: constants.py
     visible: true
     text: |
       MAX_HASH = 10 ** 6
     learner_created: true
-  - name: tutorial.db
-    visible: true
-    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/26938#comment
 status: Failed
 feedback:
-  message: |-
-    Wrong answer in test #28
-
-    When the "statistics" command is entered, your program must print: "Type the name of a course to see details or 'back' to quit:", but your output was: Most popular: n/a
-
-    Please find below the output of your program during this failed test.
-    Note that the '>' character indicates the beginning of the input line.
-
-    ---
-
-    Learning Progress Tracker
-    > statistics
-    Most popular: n/a
-    Least popular: n/a
-    Highest activity: n/a
-    Lowest activity: n/a
-    Easiest course: n/a
-    Hardest course: n/a
-  time: "Fri, 03 Nov 2023 15:57:07 UTC"
+  message: "Wrong answer in test #29\n\nYour second line should be \"id\tpoints\t\
+    completed\", but your output was\n\nPlease find below the output of your program\
+    \ during this failed test.\nNote that the '>' character indicates the beginning\
+    \ of the input line.\n\n---\n\nstdout:\nLearning Progress Tracker\n> statistics\n\
+    Type the name of a course to see details or 'back' to quit:\nMost popular: n/a\n\
+    Least popular: n/a\nHighest activity: n/a\nLowest activity: n/a\nEasiest course:\
+    \ n/a\nHardest course: n/a\n> Python\n*** Unknown syntax: Python\n\nstderr:\n\
+    DEBUG:root:popularity:[0, 0, 0, 0]\nDEBUG:root:activity:[0, 0, 0, 0]\nDEBUG:root:total_grades:[0,\
+    \ 0, 0, 0]\nDEBUG:root:difficulty:[0, 0, 0, 0]\nDEBUG:root:most_popular=None,\
+    \ least_popular=None\nDEBUG:root:most_activity=None, least_activity=None\nDEBUG:root:easiest=None,\
+    \ hardest=None\nDEBUG:root:Type the name of a course to see details or 'back'\
+    \ to quit:\nMost popular: n/a\nLeast popular: n/a\nHighest activity: n/a\nLowest\
+    \ activity: n/a\nEasiest course: n/a\nHardest course: n/a"
+  time: "Sat, 04 Nov 2023 16:13:42 UTC"
 record: 4
