@@ -1,11 +1,8 @@
-# TODO: clean up all the logging statements
-import logging
+import operator
 
 from base import Subshell
-from constants import MAX_HASH, COURSE_NAMES
+from constants import MAX_HASH, COURSE_NAMES, COMPLETE_POINTS
 from parse import parse_points, parse_creds
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 class AddStudents(Subshell):
@@ -35,7 +32,7 @@ class AddStudents(Subshell):
         else:
             # FIXME?: initialize student_data with points and submissions
             #   with values [0]*4 to prevent KeyError in code assuming
-            #   these keys exist
+            #   these keys exist.
             self.student_data[student_id] = creds
             self.number_added += 1
             print('The student has been added.')
@@ -89,10 +86,6 @@ class Find(Subshell):
 
 
 class Stats(Subshell):
-    # TODO:
-    #   Figure out a way to "establish top learners for each course",
-    #   ergo: list student ID's by decreasing points for every course,
-    #   and by ID on conflicts.
     intro = "Type the name of a course to see details or 'back' to quit:\n"
     INFO = ('Most popular: {}\n'
             'Least popular: {}\n'
@@ -100,28 +93,79 @@ class Stats(Subshell):
             'Lowest activity: {}\n'
             'Easiest course: {}\n'
             'Hardest course: {}')
+    MASTER = '{:<7}{:<10}{:<9{percent}}'
+    DATA_HEADER = (MASTER.replace('{percent}', ''))
+    DATA = MASTER.replace('{percent}', '.1%')
 
     def preloop(self):
-        stats = self.get_intro_stats()
+        stats = self.intro_stats()
         stats = [s if s is not None else 'n/a'
                  for s in stats]
         self.intro += self.INFO.format(*stats)
-        # logging.debug(f'intro:\n{self.intro}')
 
-    def get_intro_stats(self) -> (str | None,) * 6:
+    def default(self, _):
+        print('Unknown course.')
+
+    def do_python(self, arg):
+        self.course(0, arg)
+
+    def do_dsa(self, arg):
+        self.course(1, arg)
+
+    def do_databases(self, arg):
+        self.course(2, arg)
+
+    def do_flask(self, arg):
+        self.course(3, arg)
+
+    def course(self, course_id, arg):
+        match arg:
+            case '':
+                course_intro = self.course_intro(course_id)
+                lines = self.formatted_stats(course_id)
+                print(course_intro)
+                print(*lines, sep='\n')
+            case _:
+                self.default(None)
+
+    def course_intro(self, course_id):
+        course_intro = (COURSE_NAMES[course_id] + "\n"
+                        + self.DATA_HEADER.format('id', 'points', 'completed'))
+        return course_intro
+
+    def formatted_stats(self, course_id):
+        line_template = self.DATA
+        course_stats = self.course_stats(course_id)
+        lines = [line_template] * len(course_stats)
+        lines = [line.format(*row) for line, row
+                 in zip(lines, course_stats)]
+        return lines
+
+    def course_stats(self, course: int) -> [(int, int, float), ...]:
+        """Return stats of students enrolled in course as a sequence of
+        tuples (id, points, completed) sorted by points, then id."""
+        stats = []
+        for student_id, data in self.student_data.items():
+            points = data['points'][course]
+            if points:  # Student is enrolled in course
+                completed = points / COMPLETE_POINTS[course]
+                entry: tuple = (student_id, points, completed)
+                stats.append(entry)
+
+        stats.sort(key=operator.itemgetter(0))
+        stats.sort(key=operator.itemgetter(1), reverse=True)
+        return stats
+
+    def intro_stats(self) -> (str | None,) * 6:
         # FIXME?: a course with no submissions can be considered hardest
-        #         this behaviour is probably bad.
+        #         it passes the Hyperskill test but seems bad.
 
         # Maybe this can be done elegantly in a loop. Maybe.
         enrolled_counts = self.magic_sum('submissions', counting_mode=True)
-        # DEBUG('popularity', enrolled_counts)
         submission_counts = self.magic_sum('submissions')
-        # DEBUG('activity', submission_counts)
         total_grades = self.magic_sum('points')
-        # DEBUG('total_grades', total_grades)
         average_grades = [(t / s) if s != 0 else 0
                           for t, s in zip(total_grades, submission_counts)]
-        # DEBUG('difficulty', average_grades)
 
         output = []
         for metric in (enrolled_counts, submission_counts, average_grades):
@@ -166,35 +210,3 @@ class Stats(Subshell):
             least = [None]
 
         return ', '.join(most), least[0]
-
-
-def DEBUG(message, var):
-    logging.debug(f'{message}:{var}')
-
-
-if __name__ == '__main__':
-    # Stats({}).cmdloop()
-    Stats(
-        {
-            752001:
-                {
-                    'points': [69, 20, 6, 0],
-                    'submissions': [10, 5, 2, 0]
-                },
-            # 752002:
-            #     {
-            #         'points': [1, 1, 1, 0],
-            #         'submissions': [1, 1, 1, 0]
-            #     },
-            # 752003:
-            #     {
-            #         'points': [0, 0, 0, 0],
-            #         'submissions': [0, 0, 0, 0]
-            #     },
-            # # This would cause a KeyError somewhere lmao.
-            # # This could cause a KeyError somewhere lmao.
-            # 752004:
-            #     {
-            #     },
-        }
-    ).preloop()

@@ -822,9 +822,6 @@ files:
       
       if __name__ == '__main__':    LearningProgressTrackerTest().run_tests()
     learner_created: false
-  - name: tutorial.db
-    visible: true
-    learner_created: true
   - name: main.py
     visible: true
     text: |
@@ -1099,14 +1096,8 @@ files:
       MAX_HASH = 10 ** 6
     learner_created: true
 feedback_link: https://hyperskill.org/learn/step/26938#comment
-status: Failed
+status: Solved
 feedback:
-  message: "Wrong answer in test #29\n\nYour second line should be \"id\tpoints\t\
-    completed\", but your output was\n\nPlease find below the output of your program\
-    \ during this failed test.\nNote that the '>' character indicates the beginning\
-    \ of the input line.\n\n---\n\nLearning Progress Tracker\n> statistics\nType the\
-    \ name of a course to see details or 'back' to quit:\nMost popular: n/a\nLeast\
-    \ popular: n/a\nHighest activity: n/a\nLowest activity: n/a\nEasiest course: n/a\n\
-    Hardest course: n/a\n> Python\n*** Unknown syntax: Python"
-  time: "Sat, 04 Nov 2023 20:26:53 UTC"
+  message: Congratulations!
+  time: "Mon, 06 Nov 2023 17:43:07 UTC"
 record: 4
