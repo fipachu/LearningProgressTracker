@@ -30,10 +30,8 @@ class AddStudents(Subshell):
             print('This email is already taken.')
             return
         else:
-            # FIXME?: initialize student_data with points and submissions
-            #   with values [0]*4 to prevent KeyError in code assuming
-            #   these keys exist.
-            self.student_data[student_id] = creds
+            self.student_data[student_id] = (
+                    creds | {'points': [0]*4, 'submissions': [0]*4})
             self.number_added += 1
             print('The student has been added.')
 
