@@ -692,7 +692,7 @@ class LearningProgressTrackerTest(StageTest):
                                      "but your output was: " + lines[2])
 
         if any_missing_keywords(lines[3], "python", "dsa", "databases", "flask"):
-            return CheckResult.wrong("Expected highest activity: Python, DSA, Databases, Flask, " +
+            return CheckResult.wrong("Expected top activity: Python, DSA, Databases, Flask, " +
                                      "but your output was: " + lines[3])
 
         if "n/a" not in lines[4].lower():
@@ -796,10 +796,97 @@ class LearningProgressTrackerTest(StageTest):
                                      "or is incorrectly sorted")
 
         if len(lines_flask) < 4 or (not re.match(".+\\s+12\\s+2\\.2\\s?%.*", lines_flask[2]) or
-                                 not re.match(".+\\s+11\\s+2\\.0\\s?%.*", lines_flask[3]) or
-                                 not lines_flask[2].startswith(ids[0]) or not lines_flask[3].startswith(ids[1])):
+                                    not re.match(".+\\s+11\\s+2\\.0\\s?%.*", lines_flask[3]) or
+                                    not lines_flask[2].startswith(ids[0]) or not lines_flask[3].startswith(ids[1])):
             return CheckResult.wrong("Your Flask student list either contains incorrect data "
                                      "or is incorrectly sorted")
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=22)
+    def test_notification_1(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+
+        output = main.execute("notify")
+        lines = output.splitlines()
+        all_match = True
+        for line in lines:
+            if not any_missing_keywords(line, "total", "0", "notified"):
+                all_match = False
+                break
+        if all_match:
+            CheckResult.wrong("Expected output was \"Total 0 students have been notified.\", "
+                              "but your output was: " + output)
+
+        return CheckResult.correct()
+
+    @dynamic_test(order=23)
+    def test_notification_2(self) -> CheckResult:
+        main = TestedProgram()
+        main.start()
+
+        main.execute("add students")
+        main.execute("John Doe johnd@email.net")
+        main.execute("Jane Spark jspark@yahoo.com")
+        main.execute("back")
+
+        output = main.execute("list")
+        lines = output.splitlines()
+        ids = parse_ids(output)
+
+        main.execute("add points")
+        main.execute("{} 600 400 0 0".format(ids[0]))
+        main.execute("back")
+
+        output = main.execute("notify")
+        lines = output.splitlines()
+        if len(lines) == 0:
+            return CheckResult.wrong("Your program should have printed the following:\nTo: johnd@email.net\n" +
+                                     "Re: Your Learning Progress\nHello, John Doe! You have accomplished our Python "
+                                     "course!\nbut your output was: \n<empty output>")
+        if len(lines) < 7:
+            return CheckResult.wrong(
+                f"Expected output with 2 notifications should consist of 7 lines, but your output was: {len(lines)} lines")
+        if (not lines[0].lower().startswith("to:") or
+                "johnd@email.net" not in lines[0].lower() or
+                not lines[1].lower().startswith("re:") or
+                any_missing_keywords(lines[1], "learning", "progress") or
+                any_missing_keywords(lines[2], "john", "doe", "accomplished") or
+                "python" not in lines[2].lower() and "python" in lines[5].lower()):
+            return CheckResult.wrong("Your program should have printed the following:\nTo: johnd@email.net\n" +
+                                     "Re: Your Learning Progress\nHello, John Doe! You have accomplished our Python "
+                                     "course!\nbut your output was: \n" + output)
+
+        if (not lines[3].lower().startswith("to:") or
+                "johnd@email.net" not in lines[3].lower() or
+                not lines[4].lower().startswith("re:") or
+                any_missing_keywords(lines[4], "learning", "progress") or
+                any_missing_keywords(lines[5], "john", "doe", "accomplished") or
+                "dsa" not in lines[2].lower() and "dsa" not in lines[5].lower()):
+            return CheckResult.wrong("Your program should have printed the following:\nTo: johnd@email.net\n" +
+                                     "Re: Your Learning Progress\nHello, John Doe! You have accomplished our Python "
+                                     "course!\nbut your output was: \n" + output)
+
+        if any_missing_keywords(lines[6].lower(), "total", "1", "notified"):
+            return CheckResult.wrong(
+                "Expected output was \"Total 1 student has been notified.\", but your output was: \n" +
+                output)
+
+        for line in lines:
+            if "jane" in line or "spark" in line or "jspark@yahoo.com" in line:
+                return CheckResult.wrong("Your notification should not mention Jane Spark")
+
+        output = main.execute("notify")
+        lines = output.splitlines()
+        all_match = False
+        for line in lines:
+            if not any_missing_keywords(line, "total", "0", "notified"):
+                all_match = True
+                break
+        if not all_match:
+            return CheckResult.wrong("Expected output was \"Total 0 students have been notified\", " +
+                                     "but your output was: " + output)
 
         return CheckResult.correct()
 

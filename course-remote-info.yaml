@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/27528/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Mon, 06 Nov 2023 13:16:43 UTC"
+update_date: "Wed, 08 Nov 2023 15:25:12 UTC"
 stages:
   - id: 1829
     step: 26935
@@ -19,16 +19,16 @@ stages:
     is_completed: true
   - id: 1833
     step: 26939
-    is_completed: false
+    is_completed: true
 topics:
   0:
     - title: Introduction to Python
       theory_id: 5204
-    - title: Overview of the basic program
+    - title: Writing first program
       theory_id: 5208
-    - title: "PEP 8: Coding style conventions"
+    - title: "PEP 8: Coding style guide"
       theory_id: 5879
-    - title: Taking input
+    - title: Taking user's input
       theory_id: 5913
     - title: If statement
       theory_id: 5953
@@ -48,7 +48,7 @@ topics:
       theory_id: 5852
     - title: Variables
       theory_id: 5859
-    - title: Boolean logic
+    - title: Boolean type and operations. True and false
       theory_id: 6025
     - title: Comparisons
       theory_id: 5920
@@ -65,7 +65,7 @@ topics:
       theory_id: 6065
     - title: Load module
       theory_id: 6019
-    - title: Introduction to OOP
+    - title: What is object-oriented programming
       theory_id: 3614
     - title: Class
       theory_id: 6661
@@ -73,7 +73,7 @@ topics:
       theory_id: 6669
     - title: Methods
       theory_id: 6931
-    - title: What is a bug
+    - title: What are bugs
       theory_id: 5504
     - title: Functional testing
       theory_id: 13438
@@ -91,7 +91,7 @@ topics:
       theory_id: 10795
     - title: Regexps in Python
       theory_id: 9468
-    - title: Invoking a function
+    - title: Invoking functions
       theory_id: 5891
     - title: List
       theory_id: 5979

@@ -1,10 +1,15 @@
 from base import Maim
+from constants import COMPLETE_POINTS, COURSE_NAMES
 from subshells import AddStudents, AddPoints, Find, Stats
 
 
 class Tracker(Maim):
     intro = 'Learning Progress Tracker'
-    student_data = {}
+
+    def __init__(self):
+        self.student_data = {}
+        self.sent_notifications = set()
+        super().__init__()
 
     def do_add(self, arg):
         match arg:
@@ -38,6 +43,46 @@ class Tracker(Maim):
                 print('No students found.')
             case _:
                 self.default(arg)
+
+    def do_notify(self, arg):
+        match arg:
+            case '':
+                print(self.notifications())
+            case _:
+                self.default(arg)
+
+    def notifications(self):
+        template = ('To: {}\n'
+                    'Re: Your Learning Progress\n'
+                    'Hello, {}! You have accomplished our {} course!\n')
+
+        pending = []
+        students = 0
+        for student in self.student_data.values():
+            student_pending = False
+
+            for points, complete, course in zip(student['points'], COMPLETE_POINTS, COURSE_NAMES):
+                if points >= complete:
+                    new = (student['email'],
+                           ' '.join((student['first name'], student['last name'])),
+                           course)
+                    if new in self.sent_notifications:
+                        continue
+
+                    pending.append(new)
+                    self.sent_notifications.add(new)
+                    student_pending = True
+
+            if student_pending:
+                students += 1
+
+        notifications = []
+        for p in pending:
+            notifications.append(template.format(*p))
+
+        notifications.append(f'Total {students} students have been notified.')
+
+        return ''.join(notifications)
 
     def do_exit(self, arg):
         match arg:
