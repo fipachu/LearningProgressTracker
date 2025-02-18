@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/27528/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Wed, 08 Nov 2023 15:25:12 UTC"
+update_date: "Thu, 16 Nov 2023 16:07:29 UTC"
 stages:
   - id: 1829
     step: 26935
@@ -57,13 +57,11 @@ topics:
     - title: String formatting
       theory_id: 6037
   1:
-    - title: Program execution
-      theory_id: 6047
     - title: Multi-line programs
       theory_id: 5233
     - title: For loop
       theory_id: 6065
-    - title: Load module
+    - title: Importing modules
       theory_id: 6019
     - title: What is object-oriented programming
       theory_id: 3614
@@ -79,6 +77,8 @@ topics:
       theory_id: 13438
     - title: Unit testing
       theory_id: 7545
+    - title: Program execution
+      theory_id: 6047
     - title: Errors
       theory_id: 6052
     - title: Exceptions
@@ -97,13 +97,13 @@ topics:
       theory_id: 5979
     - title: Indexes
       theory_id: 6189
-    - title: Declaring a function
+    - title: Declaring functions
       theory_id: 5900
     - title: Identity testing
       theory_id: 8077
     - title: List comprehension
       theory_id: 6315
-    - title: Regexps basics
+    - title: Regular expression
       theory_id: 7580
   2:
     - title: Modulo division
